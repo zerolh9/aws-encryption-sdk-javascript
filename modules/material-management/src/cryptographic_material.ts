@@ -58,8 +58,10 @@ function portableTimingSafeEqual (a: Uint8Array, b: Uint8Array) {
    * Side channel attacks are pernicious and subtle.
    */
   eval('') // eslint-disable-line no-eval
-  /* Check for early return (Postcondition): Size is well-know information
+  /* Check for early return (Postcondition) UNTESTED: Size is well-know information
    * and does not leak information about contents.
+   * This is left untested, and fully confirming
+   * that a function is constant time is VERY hard.
    */
   if (a.byteLength !== b.byteLength) return false
 
@@ -329,7 +331,10 @@ export function decorateCryptographicMaterial<T extends CryptographicMaterial<T>
       unencryptedDataKey = new Uint8Array()
       unsetCount += 1
     }
-    /* Precondition: If the udkForVerification has not been set, it should not be settable later. */
+    /* Precondition UNTESTED: If the udkForVerification has not been set, it should not be settable later.
+     * It is not clear how this could ever happen.
+     * Short of raw memory manipulation...
+     */
     if (!udkForVerification) {
       udkForVerification = new Uint8Array()
       unsetCount += 1
@@ -338,8 +343,10 @@ export function decorateCryptographicMaterial<T extends CryptographicMaterial<T>
     udkForVerification.fill(0)
     unencryptedDataKeyZeroed = true
 
-    /* Postcondition: Both unencryptedDataKey and udkForVerification must be either set or unset.
+    /* Postcondition UNTESTED: Both unencryptedDataKey and udkForVerification must be either set or unset.
      * If it is ever the case that only one was unset, then something is wrong in a profound way.
+     * It is not clear how to test this,
+     * given that udkForVerification is as private as Javascript let you make such things.
      */
     needs(unsetCount === 0 || unsetCount === 2, 'Either unencryptedDataKey or udkForVerification was not set.')
     return material
@@ -493,7 +500,7 @@ export function decorateWebCryptoMaterial<T extends WebCryptoMaterial<T>> (mater
     if (!material.hasUnencryptedDataKey) {
       /* Precondition: If the CryptoKey is the only version, the trace information must be set here. */
       needs(trace && trace.keyName && trace.keyNamespace, 'Malformed KeyringTrace')
-      /* Precondition: On set the required KeyringTraceFlag must be set. */
+      /* Precondition: On set the required KeyringTraceFlag must be set to set a CryptoKey. */
       needs(trace.flags & setFlags, 'Required KeyringTraceFlag not set')
       /* If I a setting a cryptoKey without an unencrypted data key,
        * an unencrypted data should never be set.
@@ -537,7 +544,6 @@ export function isCryptoKey (dataKey: any): dataKey is AwsEsdkJsCryptoKey {
   return dataKey &&
     'algorithm' in dataKey &&
     'type' in dataKey &&
-    'algorithm' in dataKey &&
     'usages' in dataKey &&
     'extractable' in dataKey
 }

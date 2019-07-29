@@ -34,4 +34,14 @@ describe('AlgorithmSuite', () => {
   it('prototype should be immutable', () => {
     expect(Object.isFrozen(AlgorithmSuite.prototype))
   })
+
+  class TestAlgorithmSuite extends AlgorithmSuite {}
+
+  it('Precondition: A algorithm suite specification must be passed.', () => {
+    expect(() => new TestAlgorithmSuite(undefined as any)).to.throw('Algorithm specification not set.')
+  })
+
+  it('Precondition: The Algorithm Suite Identifier must exist.', () => {
+    expect(() => new TestAlgorithmSuite({ id: 0 } as any)).to.throw('No suite by that identifier exists.')
+  })
 })

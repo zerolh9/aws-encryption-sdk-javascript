@@ -290,7 +290,7 @@ describe('MultiKeyring: onDecrypt', () => {
     expect(test.getUnencryptedDataKey()).to.deep.equal(unencryptedDataKey)
   })
 
-  it('does not call subsequent Keyrings after receiving DecryptionMaterial', async () => {
+  it('Check for early return (Postcondition): Do not attempt to decrypt once I have a valid key.', async () => {
     const suite = new NodeAlgorithmSuite(AlgorithmSuiteIdentifier.ALG_AES128_GCM_IV12_TAG16)
     const unencryptedDataKey = new Uint8Array(suite.keyLengthBytes)
     const [edk0, keyringTrace0] = makeEDKandTrace(0)
