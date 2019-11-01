@@ -1,0 +1,67 @@
+<!DOCTYPE>
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Client-Side File Encrypt Decrypt test</title>
+    <script src="../build/file_upload_bundle.js"></script>
+  </head>
+  <body>
+    <input
+      id="encryptUpload"
+      type="file"
+      name="encryptUpload">
+    <input
+      id="encrypt"
+      type="button"
+      value="encrypt and download"
+      name="encrypt">
+
+    <input
+      id="encryptS3"
+      type="button"
+      value="encrypt and upload to S3"
+      name="encryptS3">
+    <br>
+    <input
+      id="decryptDownload"
+      type="file"
+      name="decryptDownload">
+    <input
+      id="decrypt"
+      type="button"
+      value="decrypt and download"
+      name="decrypt">
+    <br>
+    <input
+      id="s3KeyName"
+      type="text"
+      name="s3KeyName">
+    <input
+      id="decrypt2"
+      type="button"
+      value="decrypt and download"
+      name="decrypt2">
+  </body>
+
+  <script>
+
+    document
+      .getElementById('encrypt')
+      .addEventListener('click', test.encryptFile('encryptUpload'))
+    
+    document
+      .getElementById('decrypt')
+      .addEventListener('click', test.decryptFile('decryptDownload'))
+
+
+    document
+      .getElementById('encryptS3')
+      .addEventListener('click', test.encryptFileToS3('encryptUpload'))
+
+    document
+      .getElementById('decrypt2')
+      .addEventListener('click', test.decryptFileFromS3('s3KeyName'))
+
+  </script>
+</html>
