@@ -227,7 +227,7 @@ describe('NodeDefaultCryptographicMaterialsManager', () => {
 
     await expect(
       cmm.getEncryptionMaterials({ suite, encryptionContext: {} })
-    ).to.rejectedWith(Error)
+    ).to.rejectedWith(Error, 'No keyring generated an unencrypted data key.')
   })
 
   it('Postcondition: The NodeEncryptionMaterial must contain at least 1 EncryptedDataKey.', async () => {
@@ -282,7 +282,10 @@ describe('NodeDefaultCryptographicMaterialsManager', () => {
 
     await expect(
       cmm.decryptMaterials({ suite, encryptedDataKeys, encryptionContext: {} })
-    ).to.rejectedWith(Error)
+    ).to.rejectedWith(
+      Error,
+      'No keyring attempted to decrypted any of the encrypted data keys.'
+    )
   })
 
   it('Return decryption material', async () => {
