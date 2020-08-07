@@ -25,7 +25,7 @@ export function getLocalCryptographicMaterialsCache<
   proactiveFrequency: number = 1000 * 60
 ): CryptographicMaterialsCache<S> {
   /* Precondition: A capacity of 0 is defined as a null-cache.
-   * The underlying `lur-cache` treats `max` === 0
+   * The underlying `lru-cache` treats `max` === 0
    * as a cache that is unbounded.
    * While this is a reasonable thing to do
    * in many cases.
